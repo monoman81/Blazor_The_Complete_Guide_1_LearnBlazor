@@ -1,0 +1,47 @@
+﻿@page "/learnBlazor/learnRouting"
+@page "/learnBlazor/learnRouting/{Param1}/{Param2}"
+@page "/learnBlazor/learnRouting/{Param1}"
+@page "/learnBlazor/learnRouting/catch-all/{*PageParameters}"
+
+@inject NavigationManager navigationManager
+
+<h3>LearnRouting</h3>
+<p>Param1: @Param1</p>
+<p>Param2: @Param2</p>
+<p>PageParameters: @PageParameters</p>
+
+<a href="/learnBlazor/learnRouting?Param1=Learn&Param2=Blazor">Load Parameters</a>
+<button class="btn btn-success" @onclick="LoadParameters">Load Parameters</button>
+
+<button @onclick="NavigateToQueryParam" class="btn btn-primary">Navigate to Qwery Params</button>
+
+<div class="bg-info" style="height: 1000px"></div>
+
+<h2 id="target">Main title</h2>
+
+@code {
+
+    [Parameter]
+    public string Param1 { get; set; } = "";
+
+    [Parameter]
+    public string Param2 { get; set; } = "";
+
+    [Parameter]
+    public string PageParameters { get; set; } = "";
+
+    private void LoadParameters()
+    {
+        var uri = new Uri(navigationManager.Uri);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        Param1 = query["Param1"];
+        Param2 = query["Param2"];
+        navigationManager.Refresh(forceReload: true);
+    }
+
+    private void NavigateToQueryParam()
+    {
+        navigationManager.NavigateTo("learnBlazor/learnRouting?Param1=Learn&Param2=Blazor");
+    }
+
+}

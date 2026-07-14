@@ -1,0 +1,63 @@
+﻿@page "/blazorjs"
+@inject IJSRuntime JSRuntime
+
+<h3>Blazor JS</h3>
+
+<div class="row">
+    <button class="btn btn-secondary" @onclick="TestConfirmBox">Test Confirm Button</button>
+</div>
+
+<div class="row">
+    @if (ConfirmResult)
+    {
+        <p>Confirmed</p>
+    }
+    else
+    {
+        <p>Not Confirmed</p>
+    }
+</div>
+
+<div class="row">
+    <button class="btn btn-success m-2" style="width:200px" @onclick="ToastrSuccess">Toastr Success</button>
+    <button class="btn btn-danger m-2" style="width:200px" @onclick="ToastrError">Toastr Failure</button>
+</div>
+
+<div class="row">
+    <button class="btn btn-success m-2" style="width:200px" @onclick="SweetAlertSuccess">SweetAlert Success</button>
+    <button class="btn btn-danger m-2" style="width:200px" @onclick="SweetAlertError">SweetAlert Failure</button>
+</div>
+
+
+@code {
+    private string ConfirmMessage = "Are you sure you want to click here?";
+    private bool ConfirmResult { get; set; }
+
+    private async Task TestConfirmBox()
+    {
+        ConfirmResult = await JSRuntime.InvokeAsync<bool>("confirm", ConfirmMessage);
+    }
+
+    private async Task ToastrSuccess()
+    {
+        //await JSRuntime.InvokeVoidAsync("showToastr", "success", "Success Notification");
+        await JSRuntime.ToastrSuccess("Success Notification From Extension");
+    }
+
+    private async Task ToastrError()
+    {
+        //await JSRuntime.InvokeVoidAsync("showToastr", "error", "Failure Notification");
+        await JSRuntime.ToastrError("Failure Notification From Extension");
+    }
+
+    private async Task SweetAlertSuccess()
+    {
+        await JSRuntime.SweetAlertSuccess("Task completed successfully");
+    }
+
+    private async Task SweetAlertError()
+    {
+        await JSRuntime.SweetAlertError("Something went wrong...!");   
+    }
+
+}

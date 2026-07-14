@@ -1,4 +1,4 @@
-using _1_LearnBlazor.Components;
+using LearnBlazor.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
